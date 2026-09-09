@@ -47,6 +47,11 @@ const bgC = darkmode ? '#806b32' : '#F2CD60' //Note to self: Change later
 const bgC2 = darkmode ? '#360108' : '#96031A' //Note to self: Change later
 const headerC = darkmode ? '#06402B' : 'green' //Note to self: Change later
 const text_color = darkmode ? 'white' : 'black' //Global, except for calendar
+const description_bg = darkmode ? '#ffa60080' : 'orange'
+const header_bg = darkmode ? '#ff000063' : 'red'
+const source_bg = darkmode ? '#0dff0045' : 'green'
+const image_bg = darkmode ? '#ffff00ac' : 'yellow'
+const goback = darkmode ? '#0026ff58' : 'blue'
 const federal = darkmode ? 'https://dummyimage.com/600x600/8B0000/ffffff.jpg&text=Federal' : 'https://dummyimage.com/600x600/ff0000/ffffff.jpg&text=Federal' 
 const tech = darkmode ? 'https://dummyimage.com/600x600/C76E00/ffffff.jpg&text=Tech' : 'https://dummyimage.com/600x600/ff8c00/ffffff.jpg&text=Tech' 
 const business = darkmode ? 'https://dummyimage.com/600x500/BA8E23/ffffff.jpg&text=Business' : 'https://dummyimage.com/600x500/f6bd00/ffffff.jpg&text=Business'
@@ -54,7 +59,7 @@ const crime = darkmode ? 'https://dummyimage.com/600x600/006400/ffffff.jpg&text=
 const sports = darkmode ? 'https://dummyimage.com/600x600/00008B/ffffff.jpg&text=Sports' : 'https://dummyimage.com/600x600/0000ff/ffffff.jpg&text=Sports'
 
   return (
-    <SettingsContext.Provider value={{ darkmode, setDarkmode, name, setName, bgN, card, bgA, togglebordercolor, bgC, bgC2, headerC, text_color, federal, tech, business, crime, sports, nameboxcolor }}>
+    <SettingsContext.Provider value={{ darkmode, setDarkmode, name, setName, bgN, card, bgA, togglebordercolor, bgC, bgC2, headerC, text_color, federal, tech, business, crime, sports, nameboxcolor, description_bg, source_bg, goback, image_bg, header_bg }}>
       {children}
     </SettingsContext.Provider>
   );

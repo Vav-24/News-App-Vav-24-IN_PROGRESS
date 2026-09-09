@@ -3,13 +3,12 @@ import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSettings } from '../settingcontext';
 import * as ImagePicker from 'expo-image-picker';
+import { getAuth, updatePassword, updateProfile, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 
 export default function Account() {
   //Stylings Import
-  const {
-    darkmode, setDarkmode, name, setName, bgN, card, bgA, togglebordercolor, bgC, bgC2, headerC, text_color, federal, tech, business, crime, sports, nameboxcolor } = useSettings();
+  const { darkmode, setDarkmode, listmode, setListmode, name, setName, bgN, card, bgA, togglebordercolor, bgC, bgC2, headerC, text_color, federal, tech, business, crime, sports, nameboxcolor, description_bg, source_bg, goback, image_bg, header_bg, calender_mode } = useSettings();
   // States for toggles
-  const [toggle2, setToggle2] = useState(false);
   const [toggle3, setToggle3] = useState(false);
   const [toggle4, setToggle4] = useState(false);
   const [toggle5, setToggle5] = useState(false);
@@ -22,6 +21,11 @@ export default function Account() {
   const [imageurl, setimageurl] = useState(defaultimage);
   const [showimagemodal, setshowimagemodal] = useState(false);
   const [newimage, setnewimage] = useState('');
+
+  // States for updating credentials
+  const [newUsername, setNewUsername] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const auth = getAuth();
 
   const saveimage = async (url) => {
     await AsyncStorage.setItem('profile', url);
@@ -59,6 +63,7 @@ export default function Account() {
     }
     
   };
+
 
   const getUser = async () => {
     try {
@@ -113,8 +118,37 @@ const handledownloadimg = async () => {
   }
 };
 
+const handleUpdateCredentials = async () => {
+  const user = auth.currentUser;
+  if (!user) {
+    Alert.alert("Error", "No user is currently logged in.");
+    return;
+  }
+
+  if (!currentPassword) {
+    Alert.alert("Error", "Please enter your current password to confirm changes.");
+    return;
+  }
+
+  try {
+    const credential = EmailAuthProvider.credential(user.email, currentPassword);
+    await reauthenticateWithCredential(user, credential);
+
+    if (newUsername.trim()) {
+      await updateProfile(user, { displayName: newUsername });
+      setName(newUsername);
+    }
+
+    Alert.alert("Success", "Account details updated successfully!");
+    setNewUsername('');
+    setCurrentPassword('');
+  } catch (error) {
+    Alert.alert("Error", error.message);
+  }
+};
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: bgA }}>
+    <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: bgA }}>
       <View style={{ backgroundColor: nameboxcolor, flexDirection: 'row' }}>
         <TouchableOpacity activeOpacity={0.5} onPress={()=>setshowimagemodal(true)}>
           <Image
@@ -166,67 +200,25 @@ const handledownloadimg = async () => {
       </View>
 
       <View style={styles.settingRow}>
-        <Text style={styles.settingText}>Settings 2</Text>
+        <Text style={styles.settingText}>*</Text>
         <Switch
           style={styles.switch}
-          onValueChange={(value) => setToggle2(value)}
-          value={toggle2}
+          onValueChange={(value) => setListmode(value)}
+          value={listmode}
         />
       </View>
+      <View style={{height:100}}></View>
+<View style ={{alignItems:'center'}}>
+      <View style={{alignItems:'center', borderColor:'black', borderWidth:'25', backgroundColor:'purple', width:500, borderRadius:50}}>
+        <Text style={{fontWeight:'bold', color:'#5796ee'}}></Text>
+        <TextInput style={{borderWidth:3, borderRadius:30}} placeholder='Username' value={newUsername} onChangeText={setNewUsername}/>
+        <View style={{height:5}}></View>
+        <TextInput style={{borderWidth:3, borderRadius:30}} placeholder='Password' secureTextEntry={true} value={currentPassword} onChangeText={setCurrentPassword}/>
+        <View style={{height:5}}></View>
+        <TouchableOpacity style={{backgroundColor:'#5796ee, borderRadius:30, borderWidth:3'}}><Text style={{backgroundColor:'#5796ee', borderRadius:30}}>Update Username and Password</Text></TouchableOpacity>
+      </View>
+</View>
 
-      <View style={styles.settingRow}>
-        <Text style={styles.settingText}>Settings 3</Text>
-        <Switch
-          style={styles.switch}
-          onValueChange={(value) => setToggle3(value)}
-          value={toggle3}
-        />
-      </View>
-
-      <View style={styles.settingRow}>
-        <Text style={styles.settingText}>Settings 4</Text>
-        <Switch
-          style={styles.switch}
-          onValueChange={(value) => setToggle4(value)}
-          value={toggle4}
-        />
-      </View>
-
-      <View style={styles.settingRow}>
-        <Text style={styles.settingText}>Settings 5</Text>
-        <Switch
-          style={styles.switch}
-          onValueChange={(value) => setToggle5(value)}
-          value={toggle5}
-        />
-      </View>
-
-      <View style={styles.settingRow}>
-        <Text style={styles.settingText}>Settings 6</Text>
-        <Switch
-          style={styles.switch}
-          onValueChange={(value) => setToggle6(value)}
-          value={toggle6}
-        />
-      </View>
-
-      <View style={styles.settingRow}>
-        <Text style={styles.settingText}>Settings 7</Text>
-        <Switch
-          style={styles.switch}
-          onValueChange={(value) => setToggle7(value)}
-          value={toggle7}
-        />
-      </View>
-
-      <View style={styles.settingRow}>
-        <Text style={styles.settingText}>Settings 8</Text>
-        <Switch
-          style={styles.switch}
-          onValueChange={(value) => setToggle8(value)}
-          value={toggle8}
-        />
-      </View>
     </ScrollView>
   );
 }

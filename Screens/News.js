@@ -1,4 +1,4 @@
-import { Text, SafeAreaView, StyleSheet, View, FlatList, Image, TouchableOpacity, ScrollView, Button} from 'react-native';
+import { Text, SafeAreaView, StyleSheet, View, FlatList, Image, TouchableOpacity, ScrollView, Button, Platform} from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import {useState,useEffect} from 'react'
@@ -8,6 +8,23 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {Linking, Alert} from 'react-native';
 import {useSettings} from '../settingcontext'
+import { TextInput } from 'react-native-gesture-handler';
+
+justify = ''
+
+// Identifies desktop operating systems and web browsers
+export const isComputer = ['macos', 'windows', 'linux', 'web'].includes(Platform.OS);
+
+// Identifies standard mobile operating systems
+export const isPhone = ['ios', 'android'].includes(Platform.OS);
+
+// Helper string for easy reference
+export const deviceType = isComputer ? 'computer' : 'phone';
+
+//How to use above:
+//  {isComputer 
+//           ? "💻 You are viewing the Desktop interface." 
+//           : "📱 You are viewing the Mobile interface."}
 
 export default function News (props){
   //Stylings Import
@@ -23,8 +40,18 @@ const Categories = [
   { id: '5', name: 'Sports', image: sports },
 ];
 
+  useEffect(()=>{
+if (Platform.OS == 'web'){
+  justify = 'center'
+}
+else{
+  justify = ''
+}
+  }
+  );
+
   async function Apicall(){
-    let apidata= await fetch('https://api.thenewsapi.com/v1/news/top?api_token=re80rEF7q061lCAmSKuTjuUB5FcFNiUxsI2WfeiW&locale=us&limit=3') //or try https://api.thenewsapi.com/v1/news/top?api_token=doyVhdxC25CHu9ptFNnJ3W6UT7i3o5DlKb4EA2Cv&locale=us&limit=3
+    let apidata= await fetch('/1/news/top?api_token=doyVhdxC25CHu9ptFNnJ3W6UT7i3o5DlKb4EA2Cv&locale=us&limit=3') //or try https://api.thenewsapi.com/v1/news/top?api_token=re80rEF7q061lCAmSKuTjuUB5FcFNiUxsI2WfeiW&locale=us&limit=3
     let jsondata = await apidata.json()
     setData(jsondata)
     console.log(data)
@@ -53,8 +80,8 @@ const sendmail=()=>{
 }    
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: bgN }]}>
-      <GooglePlacesAutocomplete
+    <ScrollView contentContainerStyle={[styles.container, { backgroundColor: bgN, alignItems:justify }]}>
+      <TextInput
         placeholder="Search"
         styles={{
           textInput: {
@@ -72,19 +99,8 @@ const sendmail=()=>{
             marginHorizontal: 10,
             paddingHorizontal: 10,
           },
-        }}
-        renderLeftButton={() => (
-          <View style={{ paddingLeft: 10 }}>
-            <Ionicons name='location-sharp' size={24} />
-          </View>
-        )}
-        renderRightButton={() => (
-          <View style={styles.rightButton}>
-            <AntDesign name="clockcircle" size={15} style={styles.clockIcon} />
-            <Text>Search</Text>
-          </View>
-        )}
-      />
+        }}>
+      </TextInput>
 
 <View style={{height:10}}></View>
 

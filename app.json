@@ -4,26 +4,34 @@
     "slug": "snack-f75d7e77-1acd-44f6-96ca-ff28548e0989",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/News_Icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/News_Icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "purple"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "compileSdkVersion": 35,
+      "targetSdkVersion": 35,
+      "buildToolsVersion": "35.0.0",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vav32.newsapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      "./plugins/withResourceFix.js",
+      "expo-build-properties"
+    ],
     "extra": {
       "eas": {
         "projectId": "39fe456c-414b-4c1a-85ed-0393ad0df8e4"
