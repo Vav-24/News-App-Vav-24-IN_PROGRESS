@@ -51,7 +51,7 @@ else{
   );
 
   async function Apicall(){
-    let apidata= await fetch('/1/news/top?api_token=doyVhdxC25CHu9ptFNnJ3W6UT7i3o5DlKb4EA2Cv&locale=us&limit=3') //or try https://api.thenewsapi.com/v1/news/top?api_token=re80rEF7q061lCAmSKuTjuUB5FcFNiUxsI2WfeiW&locale=us&limit=3
+    let apidata= await fetch('https://api.thenewsapi.com/v1/news/top?api_token=re80rEF7q061lCAmSKuTjuUB5FcFNiUxsI2WfeiW&locale=us&limit=3') //or try /1/news/top?api_token=doyVhdxC25CHu9ptFNnJ3W6UT7i3o5DlKb4EA2Cv&locale=us&limit=3
     let jsondata = await apidata.json()
     setData(jsondata)
     console.log(data)
